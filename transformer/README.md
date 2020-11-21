@@ -1,3 +1,6 @@
+# NOTES [SelfAttention & Transformer]
+
+## Self Attention (Attention is All You Need!)
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
 <i>mary, gave, roses, to, susan</i>. We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
