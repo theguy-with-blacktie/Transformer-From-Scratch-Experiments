@@ -26,7 +26,7 @@ The set of all raw dot products <b><i>w<sup>'</sup><sub>ij</sub></i></b> forms a
 import torch
 import torch.nn.functional as F
 
-# assume we have some tensor x with size (b,t,k)
+\# assume we have some tensor x with size (b,t,k)
 x = ...
 
 raw_weights = torch.bnm(x,x.transpose(1,2))
