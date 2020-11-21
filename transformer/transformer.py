@@ -1,60 +1,36 @@
-from util import mask_
+from self-attention import SelfAttention
 
-import torch
-from torch import nn
-import torch.nn.functional as F
+class TransformerBlock(nn.Module):
 
-class SelfAttention(nn.Module):
-    '''
-    This class is the self-attention unit of the transformer.
-    This implements the very basic self-attention mechanism
-    '''
-    def __init__(self, embeddings, heads=8, mask=False):
-        '''
-        @params: embeddings -> This will represent the length of the embeddings.
-        @params: heads -> This represents multi-head attention mechanism. 
-        @params: mask -> 
-        '''
-        
+    def __init__(self, emb, heads, mask, seq_length, ff_hidden_mult=4, dropout=0.0):
         super().__init__()
-        
-        self.emb   = embeddings
-        self.head  = heads
-        self.mask  = mask
-        
-        self.toKeys     = nn.Linear(embeddings, embeddings * heads, bias=False)
-        self.toQueries  = nn.Linear(embeddings, embeddings * heads, bias=False)
-        self.toValues   = nn.Linear(embeddings, embeddings * heads, bias=False)
-        
-        self.unifyheads = nn.Linear(heads * embeddings, embeddings)
+
+        self.attention = SelfAttention(emb, heads=heads, mask=mask)
+        self.mask = mask
+
+        self.norm1 = nn.LayerNorm(emb)
+        self.norm2 = nn.LayerNorm(emb)
+
+        self.ff    = nn.Sequential(
+            nn.Linear(emb, ff_hidden_mult*emb),
+            nn.ReLU(),
+            nn.Linear(ff_hidden_mult*emb, emb)
+        )
+
+        self.do = nn.Dropout(dropout)
 
     def forward(self, x):
-        b, t, embedSize = x.size()
-        h = self.head
 
-        keys    = self.toKeys(x).view(b, t, h, embedSize)
-        queries = self.toQueries(x).view(b, t, h, embedSize)
-        values  = self.toValues(x).view(b, t, h, embedSize)
+        attended = self.attention(x)
 
-        keys    = keys.transpose(1,2).contiguous.view(b*h,t,e)
-        queries = queries.transpose(1,2).contiguous().view(b*h, t,e)
-        values  = values.transpose(1,2).contiguous().view(b*h, t, e)
+        x = self.norm1(attended + x)
 
-        # Getting the dot product of Queries & Keys 
-        dotProd = torch.bnm(queries, keys.transpose(1,2))
-        dotProd = dotProd / math.sqrt(embedSize)
+        x = self.do(x)
 
-        if self.mask:
-            mask_(dotProd, maskval=float('-inf'), mask_diagonal=False)
+        feedfoward = self.ff(x)
 
-        dotProd = F.softmax(dotProd, dim=2)
+        x = self.norm2(feedfoward + x)
 
-        if self.mask == 'first':
-            dotProd = dotProd.clone()
-            dotProd[:, :1, :] = 0.0
+        x = self.do(x)
 
-        output = torch.bnm(dotProd, values).view(b,h,t,e)
-
-        output = output.transpose(1,2).contiguous().view(b,t,h*e)
-
-        return self.unifyheads(output)
+        return x
