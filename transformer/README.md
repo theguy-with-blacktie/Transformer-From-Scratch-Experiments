@@ -46,16 +46,14 @@ y = torch.bnm(weights, x)
 The actual self-attention used in modern transformers relies on three additional tricks.<br>
 1. Queries, keys and values
 Every input vector <b><i>x<sub>i</sub></i></b> is used in three different ways in the self attention operation:
-* It is compared to every other vector to establish the weights for its own output <b><i>y<sub>i</sub></i><b>.
+* It is compared to every other vector to establish the weights for its own output <b><i>y<sub>i</sub></i></b>.
 * It is compared to ever other vector to establish the weights for the output of the j-th vector <b><i>y<sub>j</sub></i></b>.
 * It is used as part of the weighted sum to compute each output vector once the weights have been established.
 
 These roles are often called the <b>query</b>, the <b>key</b> and the <b>value</b>.
 <br>
 Below figure will provide you more insight on how actually the input in used via <b>query</b>, <b>key</b> and the <b>value</b> matrices.
-<div style="text-align:center">
 ![Query Key Value Figure](https://github.com/theguy-with-blacktie/Transformer-From-Scratch-Experiments/blob/master/transformer/qkv.PNG?raw=true)
-</div>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
 <i>mary, gave, roses, to, susan</i>. We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
