@@ -59,6 +59,8 @@ The softmax function can be very sensitive to very large input values. These kil
 <p align="center">
 <img src="https://latex.codecogs.com/svg.latex?w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" title="w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" />
 </p>
+
+<b>3. Multi-Head Attention</b>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
 <i>mary, gave, roses, to, susan</i>. We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
