@@ -58,8 +58,8 @@ Below figure will provide you more insight on how actually the input in used via
 
 2. Scaling the dot product
 The softmax function can be very sensitive to very large input values. These kill the gradient, and slow down learning, or cause it to stop altogether. Since the average value of the dot product grows with the embedding dimension <i>k</i>, it helps to scale the dot product back a little to stop the inputs to the softmax function from growing too large:<br>
-<p>
-<img align="center" src="https://latex.codecogs.com/svg.latex?w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" title="w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" />
+<p align="center">
+<img src="https://latex.codecogs.com/svg.latex?w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" title="w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" />
 </p>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
