@@ -42,7 +42,7 @@ y = torch.bnm(weights, x)
 ```
 #### Additional Tricks
 The actual self-attention used in modern transformers relies on three additional tricks.<br>
-1. Queries, keys and values
+1. <b>Queries, keys and values</b>
 Every input vector <b><i>x<sub>i</sub></i></b> is used in three different ways in the self attention operation:
 * It is compared to every other vector to establish the weights for its own output <b><i>y<sub>i</sub></i></b>.
 * It is compared to ever other vector to establish the weights for the output of the j-th vector <b><i>y<sub>j</sub></i></b>.
@@ -54,16 +54,20 @@ Below figure will provide you more insight on how actually the input in used via
 ![Query Key Value Figure](https://github.com/theguy-with-blacktie/Transformer-From-Scratch-Experiments/blob/master/transformer/qkv.PNG?raw=true)
 <br>
 
-2. Scaling the dot product
+2. <b>Scaling the dot product</b>
 The softmax function can be very sensitive to very large input values. These kill the gradient, and slow down learning, or cause it to stop altogether. Since the average value of the dot product grows with the embedding dimension <i>k</i>, it helps to scale the dot product back a little to stop the inputs to the softmax function from growing too large:<br>
 <p align="center">
 <img src="https://latex.codecogs.com/svg.latex?w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" title="w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" />
 </p>
 
-3. <b>Multi-Head Attention</b>
-<b>Why Heads in Self-Attention?</b><br>
-Consider the following example:
-<i>mary, gave, roses, to, susan</i>. We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
-<br>
+3. <b>Multi-Head Attention (Why?)</b>
+Finally, we must account for the fact that a word can mean different things to different neighbours. Consider the following example:<br>
+<i>mary, gave, roses, to, susan</i>.<br>We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
 In a single self-attention operation, all this information just gets summed together. If Susan gave Mary the roses instead, the output vector 𝐲gave would be the same, even though the meaning has changed.
-We think of <i>h</i> attention heads as <i>h</i> separate sets of three weight matrices of queries, keys & values, but it would be more efficient to combine all the 
+ 
+## Transformer
+A transformer is not just a self-attention layer, it is an <i>architecture</i>. There are some variations on how to build a basic transformer block, but most of them are structured roughly like this:
+<p align="center">
+![Transformer Block](https://github.com/theguy-with-blacktie/Transformer-From-Scratch-Experiments/blob/master/transformer/transformerBlock.PNG?raw=true)
+</p>
+That is, the block applies, in sequence: a self-attention layer, layer normalization, a feed forward layer and another layer of normalization. Residual connections are added around both, before the normalization. The order of the various components is not set in stone; the important thing is to combine self-attention with a local feedforward, and to add normalization and residual connections. 
