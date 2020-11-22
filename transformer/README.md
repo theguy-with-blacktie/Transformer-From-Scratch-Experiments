@@ -22,22 +22,22 @@ The dot product gives us a value anywhere between negative and positive infinity
 The first thing we should do is work out how to express the self attention in matrix multiplications. A naive implementation that loops all vectors to compute the weights and outputs would be too much slow.<br>
 We'll represent the input, a sequence of <i><b>t</b></i> vectors of dimension <i><b>k</b></i> as a <i><b>t x k</b></i> matrix <i><b>X</b></i>. Including a minibatch dimension <i><b>b</b></i>, gives us an input tensor of size <i><b>(b, t, k)</b></i>.<br>
 The set of all raw dot products <b><i>w<sup>'</sup><sub>ij</sub></i></b> forms a matrix, which we can compute simply by multiplying <b>X</b> by its transpose:<br>
-<code>
+```python
 import torch<br>
 import torch.nn.functional as F<br>
 x = ...<br>
 raw_weights = torch.bnm(x,x.transpose(1,2))<br>
-</code>
+```
 Then, to turn the rawweights <b><i>w<sup>'</sup><sub>ij</sub></i></b> into positive values that sum to one, we apply a <i>row-wise</i> softmax:<br>
-<code>
+```python
 weights = F.softmax(raw_weights, dim=2)
-</code>
+```
 <br>
 Finally, to compute the output sequence, we just multiply the weight matrix by <b>X</b>. This results in a batch of output matrices <b>Y</b> of size (b, y, k) whose rows are weighted sums over the rows of <b>X</b>.
 <br>
-<code>
+```python
 y = torch.bnm(weights, x)
-</code>
+```
 <br>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
