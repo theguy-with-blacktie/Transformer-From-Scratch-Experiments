@@ -54,6 +54,13 @@ These roles are often called the <b>query</b>, the <b>key</b> and the <b>value</
 <br>
 Below figure will provide you more insight on how actually the input in used via <b>query</b>, <b>key</b> and the <b>value</b> matrices.
 ![Query Key Value Figure](https://github.com/theguy-with-blacktie/Transformer-From-Scratch-Experiments/blob/master/transformer/qkv.PNG?raw=true)
+<br>
+
+2. Scaling the dot product
+The softmax function can be very sensitive to very large input values. These kill the gradient, and slow down learning, or cause it to stop altogether. Since the average value of the dot product grows with the embedding dimension <i>k</i>, it helps to scale the dot product back a little to stop the inputs to the softmax function from growing too large:<br>
+<p style="text-align:centre">
+<img src="https://latex.codecogs.com/svg.latex?w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" title="w^{`}_{ij}=\frac{Q^{T}K}{\sqrt{k}}" />
+</p>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
 <i>mary, gave, roses, to, susan</i>. We see the word 'gave' has different relations to different parts of the sentence. 'mary' expresses who's doing the giving, 'roses' expresses what's being given, and 'susan' expresses who the recipient is.
