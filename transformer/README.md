@@ -36,6 +36,7 @@ weights = F.softmax(raw_weights, dim=2)
 <br>
 Finally, to compute the output sequence, we just multiply the weight matrix by <b>X</b>. This results in a batch of output matrices <b>Y</b> of size (b, y, k) whose rows are weighted sums over the rows of <b>X</b>.
 <br>
+
 ```python
 y = torch.bnm(weights, x)
 ```
@@ -53,7 +54,7 @@ These roles are often called the <b>query</b>, the <b>key</b> and the <b>value</
 <br>
 Below figure will provide you more insight on how actually the input in used via <b>query</b>, <b>key</b> and the <b>value</b> matrices.
 <div style="text-align:center">
-<img src="qkv.png"/>
+![alt text](https://github.com/[theguy-with-blacktie]/Transformer-From-Scratch-Experiments/blob/master/transformer/qkv.PNG?raw=true)
 </div>
 <b>Why Heads in Self-Attention?</b><br>
 Consider the following example:
