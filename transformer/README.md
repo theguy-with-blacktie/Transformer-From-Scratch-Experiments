@@ -67,7 +67,5 @@ In a single self-attention operation, all this information just gets summed toge
  
 ## Transformer
 A transformer is not just a self-attention layer, it is an <i>architecture</i>. There are some variations on how to build a basic transformer block, but most of them are structured roughly like this:
-<p align="center">
 ![Transformer Block](https://github.com/theguy-with-blacktie/Transformer-From-Scratch-Experiments/blob/master/transformer/transformerBlock.PNG?raw=true)
-</p>
 That is, the block applies, in sequence: a self-attention layer, layer normalization, a feed forward layer and another layer of normalization. Residual connections are added around both, before the normalization. The order of the various components is not set in stone; the important thing is to combine self-attention with a local feedforward, and to add normalization and residual connections. 
