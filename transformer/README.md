@@ -5,17 +5,17 @@
 ### Self Attention in only Two Matrix Multiplications
 Self-attention is a sequence-to-sequence operation: a sequence of vectors goes in, and a sequence of vectors comes out. Let's call the input vectors <i><b>x<sub>1</sub>,</b></i><i><b>x<sub>2</sub>,..,</b></i><i><b>x<sub>t</sub>,</b></i> and the corresponding output vectors <i><b>y<sub>1</sub>,</b></i><i><b>y<sub>2</sub>,..,</b></i><i><b>y<sub>t</sub>,</b></i>. The vectors all have dimension <i><b>k</b></i>.<br>
 To produce output vector <i><b>y<sub>i</sub>,</b></i> the self attention operation simply takes a <i>weighted average over all the input vectors</i><br>
-<div style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?y_{i}=\sum&space;_{j}w_{ij}x_{i}" title="y_{i}=\sum _{j}w_{ij}x_{i}" /></div>
+<p align="center"><img src="https://latex.codecogs.com/svg.latex?y_{i}=\sum&space;_{j}w_{ij}x_{i}" title="y_{i}=\sum _{j}w_{ij}x_{i}" /></p>
 Where <i><b>j</b></i> indexes over the whole sequence and the weights sum to one over all <i><b>j</b></i>. The weight <i><b>w<sub>ij</sub></b></i> is not a parameter, as in a normal neural net, but it is derived from a function over <i><b>x<sub>i</sub></b></i> and <i><b>x<sub>j</sub></b></i>. The simplest option for this function is the dot product:<br>
-<div style="text-align:center">
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?w^{'}_{ij}=x^{T}_{ij}x_{j}" title="w^{'}_{ij}=x^{T}_{ij}x_{j}" /><br>
-<i>Note that <b>x<sub>i</sub></b></i> is the input vector at the same position as the current output vector <b>y<sub>i</sub></b>. For the next output vector, we get an entirely new series of dot products, and a different weighted sum.</i>
-</div>
+<i>Note that <b>x<sub>i</sub></b> is the input vector at the same position as the current output vector <b>y<sub>i</sub></b>. For the next output vector, we get an entirely new series of dot products, and a different weighted sum.</i>
+</p>
 <br>
 The dot product gives us a value anywhere between negative and positive infinity, so we apply a softmax to map the values to [0,1] and to ensure that they sum to 1 over the whole sequence:
-<div style="text-align:center">
+<p align="center">
 <img src="https://latex.codecogs.com/svg.latex?w_{ij}=\frac{\sigma&space;(w^{'}_{ij})}{\sum&space;_{j}\sigma(w^{'}_{ij})}" title="w_{ij}=\frac{\sigma (w^{'}_{ij})}{\sum _{j}\sigma(w^{'}_{ij})}" />
-</div>
+</p>
 <b>And that's the basic operation of self attention.</b>
 
 #### Implementation
@@ -40,8 +40,6 @@ Finally, to compute the output sequence, we just multiply the weight matrix by <
 ```python
 y = torch.bnm(weights, x)
 ```
-<br>
-
 #### Additional Tricks
 The actual self-attention used in modern transformers relies on three additional tricks.<br>
 1. Queries, keys and values
